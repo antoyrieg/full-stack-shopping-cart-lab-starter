@@ -6,7 +6,11 @@ app.service("cartService", function($http) {
     // entire response object.)
     this.getAllItems = function() {
         // GET /api/items
-
+      return  $http.get("/api/items").then(function(response){
+        return response.data; //this gets returned to the controller
+      //cant return info to the function inside the method, has to be returned to the whole method's function itself.
+      //we have to create another promise that has the data in it
+      })
         // TODO Make the HTTP request to the server and return a promise.
     };
 
@@ -16,11 +20,15 @@ app.service("cartService", function($http) {
     // Return a promise that resolves when the request finishes. It doesn't
     // matter what the value of the promise is.
     this.addItem = function(item) {
+      return $http.post("/api/items", {product: item.product, price: item.price, quantity: item.quantity}).then(function(response){
+        console.log(response.data);
+        return response.data
+    });
+  };
         // POST /api/items
         // body -> { product: "...", price: ... }
 
         // TODO Make the HTTP request to the server and return a promise.
-    };
 
     // Call the Node Server API to delete an item.
     // The itemId parameter will be the ID of the item to delete.
@@ -30,6 +38,9 @@ app.service("cartService", function($http) {
         // DELETE /api/items/{ID}
 
         // TODO Make the HTTP request to the server and return a promise.
+        return $http.delete("/api/items/" + itemId).then(function(response){
+          return response;
+        })
     };
 
 });
